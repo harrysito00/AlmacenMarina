@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:grid="http://schemas.microsoft.com/wpf/2008/toolkit"  
       mc:Ignorable="d" 
       d:DesignHeight="349"
 	Title="SalesProduct"   Height="720" Width="1182">
@@ -72,15 +73,21 @@
         </Rectangle>
         <Label Content="Codigo" HorizontalAlignment="Left" Margin="395.5,171.6,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Times New Roman"/>
         <TextBox x:Name="TxtCodBarra" Height="30" Margin="395.5,204,585.5,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontFamily="Times New Roman" FontSize="16" KeyDown="TxtCodBarra_KeyDown"/>
-        <DataGrid AutoGenerateColumns="True" HorizontalAlignment="Left" Margin="97,306,0,138" x:Name="DatGridContent" Width="669" FontSize="24" FontFamily="Lucida Sans Unicode" FontWeight="Normal" AlternatingRowBackground="#FFE52020" Background="#FF9DE1FF" CellEditEnding="DatGridContent_CellEditEnding">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Codigo" Binding="{Binding IdProducto}" />
-                <DataGridTextColumn Header="Producto" Binding="{Binding NombreProducto}" />
-                <DataGridTextColumn Header="Precio" Binding="{Binding Precio}" />
-                <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad}" />
-            </DataGrid.Columns>
-
-        </DataGrid>
+        <grid:DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="97,306,0,138" x:Name="DatGridContent" Width="669" FontSize="24" FontFamily="Lucida Sans Unicode" FontWeight="Normal" AlternatingRowBackground="#FFE52020" Background="#FF9DE1FF" SelectionMode="Single" AlternationCount="2">
+            <grid:DataGrid.Columns>
+                <grid:DataGridTextColumn Header="Codigo" Binding="{Binding IdProducto}" />
+                <grid:DataGridTextColumn Header="Producto" Binding="{Binding NombreProducto}" />
+                <grid:DataGridTextColumn Header="Precio" Binding="{Binding Precio}" />
+                <grid:DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad}" />
+                <grid:DataGridTemplateColumn Header="Editar">
+                <grid:DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button x:Name="btEdit" Content="Edit" Click="EditButton_Click" />
+                    </DataTemplate>
+                </grid:DataGridTemplateColumn.CellTemplate>
+            </grid:DataGridTemplateColumn>
+            </grid:DataGrid.Columns>
+        </grid:DataGrid>
         <Rectangle Fill="#FFF4F4F5" Height="29" Margin="560,0,416,110" Stroke="Black" VerticalAlignment="Bottom" StrokeThickness="0"/>
         <Label x:Name="LblTotVenta" Content="" HorizontalAlignment="Left" Margin="645,0,0,110" VerticalAlignment="Bottom" Width="68" FontFamily="Times New Roman" FontSize="16"/>
         <Label Content="TOTAL :" HorizontalAlignment="Left" Margin="572,0,0,110" VerticalAlignment="Bottom" Width="68" FontFamily="Times New Roman" FontSize="16"/>

@@ -29,9 +29,9 @@ namespace AlmacenMarina.Controls
             return message = "no existe el producto";
         }
 
-        internal ProductDetail ultimoSale()
+        internal List<ProductDetail> ultimoSale()
         {
-            return listProduct.LastOrDefault();
+            return listProduct;
         }
 
         private bool validarProduct(String code)
@@ -178,6 +178,33 @@ namespace AlmacenMarina.Controls
 
                 throw e;
             }
+        }
+
+        public bool updateList(ProductDetail product)
+        {
+            var t = db.Product.Join(db.CodeProduct, b => b.IdProduct, p => p.IdProduct, (b, p) => new { b, p }).Where(c => (c.p.IdCodeProduct == product.IdProducto || c.p.IdCodeBox == product.IdProducto) && c.p.Quality > product.Cantidad).Count();
+            money = 0;
+            if (t !=0)
+            {
+                List<ProductDetail> result = new List<ProductDetail>();
+                foreach (var item in listProduct)
+                {
+                    if (item.NombreProducto.Equals(product.NombreProducto) && item.IdProducto == product.IdProducto)
+                    {
+                        result.Add(product);
+                        money = money + (item.Precio*item.Cantidad);
+                    }
+                    else
+                    {
+                        result.Add(item);
+                        money = money + item.Precio;
+                    }
+                
+                }
+                listProduct = result;
+                return true;
+            }
+            return false;
         }
     }
 }

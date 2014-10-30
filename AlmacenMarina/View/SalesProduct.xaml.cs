@@ -1,7 +1,6 @@
 ﻿using AlmacenMarina.Controls;
 using AlmacenMarina.Model;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +31,8 @@ namespace AlmacenMarina.View
             switch (control.addSales(TxtCodBarra.Text))
             {
                 case "Habilitado":
-                    DatGridContent.Items.Add(control.ultimoSale());
+                    DatGridContent.ItemsSource = control.ultimoSale();
+                    DatGridContent.Items.Refresh();
                     TxtCodBarra.Clear();
                     LblTotVenta.Content = control.totalMoney().ToString();
                     return true;
@@ -68,8 +68,8 @@ namespace AlmacenMarina.View
         {
             decimal a = decimal.Parse(TxtEfectivo.Text);
             decimal b = decimal.Parse(LblTotVenta.Content.ToString());
-            decimal result =  a -  b;
-            LblCambio.Content = result.ToString(); 
+            decimal result = a - b;
+            LblCambio.Content = result.ToString();
         }
 
         private void btEliminar_Click(object sender, RoutedEventArgs e)
@@ -99,9 +99,32 @@ namespace AlmacenMarina.View
             }
         }
 
-        private void DatGridContent_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            try
+            {
+
+                ProductDetail customerRow = DatGridContent.SelectedItem as ProductDetail;
+
+                if (control.updateList(customerRow))
+                {
+                     
+                    LblTotVenta.Content = control.totalMoney().ToString();
+                }
+                else
+                {
+                    MessageBox.Show("exede el limite de productos");
+                }
+              
+
+            }
+            catch (Exception r)
+            {
+
+                MessageBox.Show(r.Message);
+            }
         }
+
+
     }
 }
